@@ -1,0 +1,115 @@
+#include <SPI.h>
+#include <LoRa.h>
+
+// LoRa configuration
+#define SS    10
+#define RST   9
+#define DIO0  2
+
+// Motor pins
+#define IN1   4
+#define IN2   5
+#define IN3   6
+#define IN4   7
+
+// Ultrasonic sensor
+#define trigPin 8
+#define echoPin 3
+
+void setup() {
+  Serial.begin(9600);
+
+  // Motor setup
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  // Sensor setup
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+  // LoRa setup
+  LoRa.setPins(SS, RST, DIO0);
+  if (!LoRa.begin(433E6)) {
+    Serial.println(" LoRa init failed!");
+    while (true);
+  }
+
+  Serial.println(" LoRa Receiver Ready");
+}
+
+void loop() {
+  int packetSize = LoRa.parsePacket();
+  if (packetSize) {
+    String command = "";
+    while (LoRa.available()) {
+      command += (char)LoRa.read();
+    }
+
+    command.trim();  // Cleans up trailing newlines
+    Serial.println(" Received: " + command);
+    executeCommand(command);
+  }
+
+  delay(100);  // Stability delay
+}
+
+void executeCommand(String cmd) {
+  long duration, distance;
+
+  // Measure distance
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = duration * 0.034 / 2;
+
+  // Obstacle check before moving forward
+  if (distance < 25 && cmd == "forward") {
+    stopMotors();
+    Serial.println(" Obstacle detected at " + String(distance) + "cm");
+    return;
+  }
+
+  if (cmd == "forward") {
+    moveForward();
+  } else if (cmd == "backward") {
+    moveBackward();
+  } else if (cmd == "left") {
+    turnLeft();
+  } else if (cmd == "right") {
+    turnRight();
+  } else {
+    stopMotors();
+    Serial.println("Unknown command. Motors stopped.");
+  }
+}
+
+// Motor actions
+void moveForward() {
+  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);
+}
+
+void moveBackward() {
+  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);
+}
+
+void turnLeft() {
+  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);
+}
+
+void turnRight() {
+  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);
+}
+
+void stopMotors() {
+  digitalWrite(IN1, LOW); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, LOW);
+}
