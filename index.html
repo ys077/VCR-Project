@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LORA BOT</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Chakra+Petch:wght@400;500;700&display=swap"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root { /* Light Theme */
+        --bg-base-rgb: 224 224 224;      /* Concrete Gray */
+        --bg-secondary-rgb: 245 245 245; /* Off-white */
+        --bg-tertiary-rgb: 189 189 189;  /* Mid Gray */
+        --accent-primary-rgb: 211 47 47;  /* Red */
+        --text-primary-rgb: 33 33 33;     /* Dark Charcoal */
+        --text-secondary-rgb: 97 97 97;   /* Darker Gray */
+        --border-color-rgb: 189 189 189;  /* Mid Gray */
+      }
+      html.dark { /* Dark Theme */
+        --bg-base-rgb: 26 26 26;          /* Dark Charcoal */
+        --bg-secondary-rgb: 44 44 44;     /* Dark Gray */
+        --bg-tertiary-rgb: 62 62 62;      /* Lighter Gray/Olive */
+        --accent-primary-rgb: 255 107 0;  /* Tactical Orange */
+        --text-primary-rgb: 234 234 234;  /* Off-white */
+        --text-secondary-rgb: 160 160 160;/* Mid Gray */
+        --border-color-rgb: 62 62 62;     /* Lighter Gray/Olive */
+      }
+      body, .bg-base, .bg-secondary, .bg-tertiary, .text-primary, .text-secondary, .border-default {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      }
+       #root {
+        min-height: 100vh;
+      }
+      /* Custom styles for range slider */
+      input[type=range] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        background: transparent;
+        cursor: pointer;
+      }
+      input[type=range]::-webkit-slider-runnable-track {
+        background: rgb(var(--bg-tertiary-rgb));
+        height: 4px;
+      }
+      input[type=range]::-moz-range-track {
+        background: rgb(var(--bg-tertiary-rgb));
+        height: 4px;
+      }
+      input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        margin-top: -6px;
+        background-color: rgb(var(--accent-primary-rgb));
+        height: 16px;
+        width: 16px;
+        border-radius: 2px;
+      }
+      input[type=range]::-moz-range-thumb {
+        background-color: rgb(var(--accent-primary-rgb));
+        height: 16px;
+        width: 16px;
+        border-radius: 2px;
+        border: none;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              'base': 'rgb(var(--bg-base-rgb) / <alpha-value>)',
+              'secondary': 'rgb(var(--bg-secondary-rgb) / <alpha-value>)',
+              'tertiary': 'rgb(var(--bg-tertiary-rgb) / <alpha-value>)',
+              'accent-primary': 'rgb(var(--accent-primary-rgb) / <alpha-value>)',
+              'primary': 'rgb(var(--text-primary-rgb) / <alpha-value>)',
+              'secondary-text': 'rgb(var(--text-secondary-rgb) / <alpha-value>)',
+              'default': 'rgb(var(--border-color-rgb) / <alpha-value>)',
+            },
+            fontFamily: {
+                'display': ['"Black Ops One"', 'sans-serif'],
+                'body': ['"Chakra Petch"', 'sans-serif'],
+            },
+            borderRadius: {
+                'none': '0',
+                'sm': '0.125rem',
+                'DEFAULT': '0.25rem',
+                'md': '0.375rem',
+                'lg': '0.5rem',
+                'xl': '0.75rem',
+                '2xl': '1rem',
+                '3xl': '1.5rem',
+                'full': '9999px',
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.11.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

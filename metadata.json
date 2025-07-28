@@ -1,0 +1,7 @@
+{
+  "name": " LORA BOT",
+  "description": "A web interface to control LORA BOT using voice commands processed by Gemini, or via manual controls. Speak commands to the robot or use the on-screen buttons to navigate.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
